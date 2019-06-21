@@ -2,39 +2,39 @@ package com.app.poc
 
 import android.arch.paging.PageKeyedDataSource
 import android.util.Log
+import com.google.gson.JsonElement
+import org.json.JSONArray
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.collections.ArrayList
 
-class ItemDataSource : PageKeyedDataSource<Int, StackApiResponse.Items>() {
+class ItemDataSource : PageKeyedDataSource<Int,Order>() {
 
 
     private val PAGE_SIZE = 10
     private val FIRST_PAGE: Int = 1
-    private val SITE_NAME: String = "stackoverflow"
 
     override fun loadInitial(
         params: LoadInitialParams<Int>,
-        callback: LoadInitialCallback<Int, StackApiResponse.Items>
-    ) {
+        callback: LoadInitialCallback<Int, Order>) {
 
-        Log.e("Rishabh","-----------------Load Initial-------------------"+FIRST_PAGE)
-
+        Log.e("Rishabh", "-----------------Load Initial-------------------" + FIRST_PAGE)
 
         RetrofitClient
             .getInstance()
             ?.getApi()
-            ?.getAnswers(FIRST_PAGE, PAGE_SIZE, SITE_NAME)
-            ?.enqueue(object : Callback<StackApiResponse> {
-                override fun onFailure(call: Call<StackApiResponse>, t: Throwable) {
+            ?.getOrders(FIRST_PAGE, PAGE_SIZE)
+            ?.enqueue(object : Callback<ApiResponse> {
+                override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
                     Log.e("Rishabh", "Load Initial Failure")
                 }
 
-                override fun onResponse(call: Call<StackApiResponse>, response: Response<StackApiResponse>) {
+                override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
 
-
-                    if(response.body() != null){
-                        callback.onResult(response.body()!!.items, null, FIRST_PAGE + 1)
+                    if (response.body() != null) {
+                        callback.onResult(response.body()!!.order, null, FIRST_PAGE + 1)
                     }
                 }
 
@@ -42,31 +42,33 @@ class ItemDataSource : PageKeyedDataSource<Int, StackApiResponse.Items>() {
 
     }
 
-    override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, StackApiResponse.Items>) {
+    override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Order>) {
 
-        Log.e("Rishabh","-----------------Load After-------------------  "+params.key)
+        Log.e("Rishabh", "-----------------Load After-------------------  " + params.key)
 
         RetrofitClient
             .getInstance()
             ?.getApi()
-            ?.getAnswers(params.key, PAGE_SIZE, SITE_NAME)
-            ?.enqueue(object : Callback<StackApiResponse> {
-                override fun onFailure(call: Call<StackApiResponse>, t: Throwable) {
+            ?.getOrders(params.key, PAGE_SIZE)
+            ?.enqueue(object : Callback<ApiResponse> {
+                override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
                     Log.e("Rishabh", "Load After Failure")
                 }
 
-                override fun onResponse(call: Call<StackApiResponse>, response: Response<StackApiResponse>) {
+                override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
 
-                    if(response.body() != null){
-                        val b: Boolean = (response.body()?.has_more!!)
-                      //  Log.e("Rishabh","Has More value: "+b)
+                    if (response.body() != null) {
+                        val b: Boolean = (response.body()!!.has_more)
+                        Log.e("Rishabh","has_more: "+b)
                         val key: Int?
                         if (b) {
                             key = params.key + 1
                         } else {
                             key = null
                         }
-                        callback.onResult(response.body()?.items!!, key)
+                        callback.onResult(response.body()!!.order, key)
+                    }else {
+                        Log.e("Rishabh","Load after response bull")
                     }
 
                 }
@@ -75,31 +77,31 @@ class ItemDataSource : PageKeyedDataSource<Int, StackApiResponse.Items>() {
 
     }
 
-    override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, StackApiResponse.Items>) {
+    override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, Order>) {
 
-        Log.e("Rishabh","-----------------Load BEfore-------------------  "+params.key)
+        Log.e("Rishabh", "-----------------Load BEfore-------------------  " + params.key)
 
         RetrofitClient
             .getInstance()
             ?.getApi()
-            ?.getAnswers(params.key, PAGE_SIZE, SITE_NAME)
-            ?.enqueue(object : Callback<StackApiResponse> {
-                override fun onFailure(call: Call<StackApiResponse>, t: Throwable) {
+            ?.getOrders(params.key, PAGE_SIZE)
+            ?.enqueue(object : Callback<ApiResponse> {
+                override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
                     Log.e("Rishabh", "Load Before Failure")
                 }
 
-                override fun onResponse(call: Call<StackApiResponse>, response: Response<StackApiResponse>) {
+                override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
 
-                    if(response.body() != null) {
+                    if (response.body() != null) {
                         val b: Boolean = (params.key > 1)
-
                         val key: Int?
                         if (b) {
                             key = params.key - 1
                         } else {
                             key = null
                         }
-                        callback.onResult(response.body()?.items!!, key)
+
+                        callback.onResult(response.body()!!.order, key)
                     }
 
                 }

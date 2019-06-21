@@ -5,12 +5,12 @@ import android.arch.paging.DataSource
 import android.arch.paging.PageKeyedDataSource
 import android.util.Log
 
-class ItemDataSourceFactory : DataSource.Factory<Int, StackApiResponse.Items>() {
+class ItemDataSourceFactory : DataSource.Factory<Int, Order>() {
 
-    private val itemMutableLiveData:MutableLiveData<PageKeyedDataSource<Int, StackApiResponse.Items>> =
+    private val itemMutableLiveData:MutableLiveData<PageKeyedDataSource<Int, Order>> =
         MutableLiveData()
 
-    override fun create(): DataSource<Int, StackApiResponse.Items> {
+    override fun create(): DataSource<Int, Order> {
 
         val itemDataSource = ItemDataSource()
         Log.e("Rishabh","CREATE MUTABLE PAGE KEY DATA")
@@ -18,7 +18,7 @@ class ItemDataSourceFactory : DataSource.Factory<Int, StackApiResponse.Items>() 
         return itemDataSource
     }
 
-    fun getItemMutableLiveData():MutableLiveData<PageKeyedDataSource<Int, StackApiResponse.Items>> {
+    fun getItemMutableLiveData():MutableLiveData<PageKeyedDataSource<Int, Order>> {
         Log.e("Rishabh","GET MUTABLE PAGE KEY DATA")
         return itemMutableLiveData
     }

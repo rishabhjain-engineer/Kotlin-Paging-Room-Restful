@@ -1,12 +1,10 @@
 package com.app.poc
 
 import android.app.Application
-import android.arch.lifecycle.LiveData
 import android.arch.paging.PagedList
 import android.os.AsyncTask
 import com.app.poc.Room.ItemDao
 import com.app.poc.Room.ItemDatabase
-import com.app.poc.Room.ItemEntity
 
 class ItemRepository(application: Application) {
 
@@ -20,7 +18,7 @@ class ItemRepository(application: Application) {
     }
 
 
-    fun insert(list: PagedList<ItemEntity>){
+    /*fun insert(list: PagedList<ItemEntity>){
         InsertItemAsyncTask(itemDao,list).execute()
     }
 
@@ -72,7 +70,7 @@ class ItemRepository(application: Application) {
             }
 
 
-        }
-    }
+        }*/
+  //  }
 
 }

@@ -3,12 +3,13 @@ package com.app.poc
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class RetrofitClient {
+class RetrofitClient private constructor() {
 
     private var retrofit: Retrofit
-    private val BASE_URL = "https://api.stackexchange.com/2.2/"
+   // private val BASE_URL = "https://api.stackexchange.com/2.2/"
+    private val BASE_URL = "http://13.229.64.222/"
 
-    private constructor() {
+    init {
         retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())

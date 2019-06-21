@@ -1,18 +1,15 @@
 package com.app.poc
 
-import android.app.Application
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.ViewModel
 import android.arch.paging.LivePagedListBuilder
 import android.arch.paging.PageKeyedDataSource
 import android.arch.paging.PagedList
-import android.util.Log
-import com.app.poc.Room.ItemEntity
 
 class MainActivityViewModel:ViewModel() {
 
-    private  var itemPagedList:LiveData<PagedList<StackApiResponse.Items>>
-    private  var liveDataSource:LiveData<PageKeyedDataSource<Int,StackApiResponse.Items>>
+    private  var itemPagedList:LiveData<PagedList<Order>>
+    private  var liveDataSource:LiveData<PageKeyedDataSource<Int,Order>>
   //  private  var repository:ItemRepository
 
     init {
@@ -28,8 +25,6 @@ class MainActivityViewModel:ViewModel() {
                     .build()
 
         itemPagedList = LivePagedListBuilder(itemDataSourceFactory,config).build()
-       // Log.e("Rishabh","itemPagedList: "+itemPagedList.value!!.size)
-        Log.e("Rishabh","--------------------------------------")
     }
 
 
@@ -39,10 +34,7 @@ class MainActivityViewModel:ViewModel() {
 
 
 
-    fun getItemPagedList():LiveData<PagedList<StackApiResponse.Items>> {
-       // Log.e("Rishabh","itemPagedList received: "+repository.getAllItems().value!!.size)
-        Log.e("Rishabh","--------------------------------------")
-        Log.e("Rishabh","***************************************")
+    fun getItemPagedList():LiveData<PagedList<Order>> {
         return itemPagedList
     }
 

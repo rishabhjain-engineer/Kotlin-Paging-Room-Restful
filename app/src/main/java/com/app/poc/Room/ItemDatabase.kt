@@ -4,7 +4,7 @@ import android.arch.persistence.room.*
 import android.content.Context
 
 
-@Database(entities= arrayOf(ItemEntity::class), version = 1)
+//@Database(entities= arrayOf(ItemEntity::class), version = 1)
 
 public abstract class ItemDatabase: RoomDatabase() {
 
